@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import TabOne from './TabOne';
 import TabTwo from './TabTwo';
+import TabThree from './TabThree';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TabsScreen'>;
 
@@ -15,6 +16,7 @@ const Tab = createBottomTabNavigator();
 export type RootTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
+  TabThree: undefined;
 };
 
 const TabsScreen = ({ navigation }: Props) => { 
@@ -22,6 +24,7 @@ const TabsScreen = ({ navigation }: Props) => {
       <Tab.Navigator>
         <Tab.Screen name="TabOne" component={TabOne} />
         <Tab.Screen name="TabTwo" component={TabTwo} />
+        <Tab.Screen name="TabThree" component={TabThree} />
       </Tab.Navigator>
     );
 };
