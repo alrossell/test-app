@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert, ScrollView } from 'react-native';
-import { RootTabParamList } from './TabsScreen';
+import { RootTabParamList } from './_layout';
 
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-import client from "../api/apiClient"
+import client from "../../api/apiClient"
 
 type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'TabThree'>;
 

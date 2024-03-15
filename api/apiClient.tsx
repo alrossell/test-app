@@ -12,6 +12,16 @@ interface Book {
 class APIClient {
     constructor(private apiUrl: string) {}
 
+    public async deleteAllBooks(): Promise<void> {
+        try {
+            console.log("Deleting all books");
+            await axios.delete(`${this.apiUrl}/books`, {withCredentials: true});
+            console.log("Deleted all books");
+        } catch (error) {
+            throw new Error('Error deleting all books');
+        }
+    }
+
     public async getBooks(): Promise<Book[]> {
         try {
             console.log("Getting books");

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../App';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -21,7 +21,7 @@ export type RootTabParamList = {
 
 const TabsScreen = ({ navigation }: Props) => { 
     return (
-      <Tab.Navigator>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen name="TabOne" component={TabOne} />
         <Tab.Screen name="TabTwo" component={TabTwo} />
         <Tab.Screen name="TabThree" component={TabThree} />

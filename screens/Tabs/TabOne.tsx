@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert, ScrollView } from 'react-native';
-import { RootTabParamList } from './TabsScreen';
+import { RootTabParamList } from './_layout';
 
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-import client from "../api/apiClient"
+import client from "../../api/apiClient"
 
 type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'TabOne'>;
 
@@ -22,13 +22,27 @@ const TabOne: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) =
     const handleGetUsers = () => {
         const fectchData = async () => {
             try {
+                console.log("Fetching books");
                 const fetchedBooks = await client.getBooks();
-                setBooks(fetchedBooks as unknown as Book[]);
+                if(fetchedBooks != null)
+                    setBooks(fetchedBooks as unknown as Book[]);
             } catch(error) {
                 console.log(error);
             }
         }
         fectchData();
+    }
+
+    const handleDeleteBooks = () => {
+        const deleteData = async () => {
+            try {
+                await client.deleteAllBooks();
+                setBooks([]);
+            } catch(error) {
+                console.log(error);
+            }
+        }
+        deleteData();
     }
 
     const createReviewCard = (newBook: Book) => {
@@ -50,7 +64,8 @@ const TabOne: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) =
                 ))}
             </ScrollView>
 
-            <Button title="GetUser" onPress={handleGetUsers} />
+            <Button title="Get Books" onPress={handleGetUsers} />
+            <Button title="Clear Users" onPress={handleDeleteBooks} />
         </View>
     );
 };

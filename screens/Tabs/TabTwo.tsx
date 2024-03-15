@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootTabParamList } from './TabsScreen';
+import { RootTabParamList } from './_layout';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-
-import client from "../api/apiClient";
+import client from "../../api/apiClient";
 
 type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'TabTwo'>;
 
@@ -26,7 +25,7 @@ const TabTwo: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) =
         const sendData = async () => {
             try {
                 const test: Book = {
-                    id: "2",
+                    id: title + author + year,
                     title: title,
                     author: author,
                     year: year 
@@ -61,7 +60,7 @@ const TabTwo: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) =
                 value={year}
                 onChangeText={setYear}
             />
-            <Button title="HomeScreen" onPress={handleNewBook} />
+            <Button title="Create Book" onPress={handleNewBook} />
         </View>
 
     );
