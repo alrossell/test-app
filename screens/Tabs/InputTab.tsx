@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootTabParamList } from './_layout';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-import client from "../../api/apiClient";
+import { SearchBar } from 'react-native-elements';
 
-type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'TabTwo'>;
+import client from "../../api/apiClient";
+import { Song } from '../../api/apiClient';
+
+type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'InputTab'>;
 
 interface Book {
     id: string;
@@ -15,51 +18,63 @@ interface Book {
     year: string;
 }
 
-const TabTwo: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) => {
+const InputTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) => {
 
     const [author, setAuthor] = useState<string>('');
     const [title, setTitle] = useState<string>('');
     const [year, setYear] = useState<string>('');
 
+    const [filteredData, setFilteredData] = useState<Array<string>>([]);
+
     const handleNewBook = () => {
+        console.log("handleNewBook");
         const sendData = async () => {
             try {
-                const test: Book = {
-                    id: title + author + year,
-                    title: title,
-                    author: author,
-                    year: year 
+                const song: Song = {
+                    id: -1,
+                    title: "test song", 
+                    artist: "test artist",
+                    album: "test album",
+                    releaseYear: 1,
+                    genre: "test genre",
+                    durationSeconds: 1
                 }
-                await client.createBook(test);
+
+                console.log(song);
+                await client.createSong(song);
             } catch(error) {
                 console.log(error);
             }
         }
 
         sendData();
-    }
+    };
+
+    const updateAuthor = (text: string) => {
+        setAuthor(text);
+        
+        client.GetSearchResults(text)
+            .then((data) => { setFilteredData(data); })
+            .catch(error => { console.log(error); })
+    };
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Hello from TabTwo</Text>
+            <Text>Hello from InputTab</Text>
+ 
             <TextInput
                 style={styles.input}
                 placeholder="Author"
                 value={author}
-                onChangeText={setAuthor}
+                onChangeText={updateAuthor}
+             />
+
+            <FlatList
+                data={filteredData}
+                keyExtractor={item => item}
+                renderItem={({ item }) => <Text>{item}</Text>}
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Title"
-                value={title}
-                onChangeText={setTitle}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Year"
-                value={year}
-                onChangeText={setYear}
-            />
+
             <Button title="Create Book" onPress={handleNewBook} />
         </View>
 
@@ -86,5 +101,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TabTwo
+export default InputTab
 

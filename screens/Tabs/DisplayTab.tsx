@@ -5,8 +5,9 @@ import { RootTabParamList } from './_layout';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 import client from "../../api/apiClient"
+import { Song } from '../../api/apiClient'
 
-type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'TabOne'>;
+type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'DisplayTab'>;
 
 type Book = {
     id: string
@@ -15,7 +16,7 @@ type Book = {
     year: string 
 }
 
-const TabOne: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) => {
+const DisplayTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) => {
 
     const [books, setBooks] = useState<Array<Book>>([]);
 
@@ -23,7 +24,7 @@ const TabOne: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) =
         const fectchData = async () => {
             try {
                 console.log("Fetching books");
-                const fetchedBooks = await client.getBooks();
+                const fetchedBooks = await client.getSongs();
                 if(fetchedBooks != null)
                     setBooks(fetchedBooks as unknown as Book[]);
             } catch(error) {
@@ -36,7 +37,7 @@ const TabOne: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) =
     const handleDeleteBooks = () => {
         const deleteData = async () => {
             try {
-                await client.deleteAllBooks();
+                await client.deleteAllSongs();
                 setBooks([]);
             } catch(error) {
                 console.log(error);
@@ -57,7 +58,7 @@ const TabOne: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) =
 
     return (
         <View style={styles.container}>
-            <Text>Hello from TabOne</Text>
+            <Text>Hello from DisplayTab</Text>
             <ScrollView>
                 {books.map((item, index) => (
                     createReviewCard(item)
@@ -93,5 +94,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TabOne;
+export default DisplayTab;
 

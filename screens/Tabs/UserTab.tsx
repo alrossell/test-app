@@ -6,7 +6,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 import client from "../../api/apiClient"
 
-type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'TabThree'>;
+type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'UserTab'>;
 
 type Book = {
     id: string
@@ -15,7 +15,7 @@ type Book = {
     year: string 
 }
 
-const TabThree: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) => {
+const UserTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Text>Hello from TabThree</Text>
@@ -46,5 +46,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TabThree;
-
+export default UserTab;

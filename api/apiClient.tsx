@@ -2,70 +2,88 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000'; 
 
-interface Book {
-    id: string;
-    title: string;
-    author: string;
-    year: string;
+export interface Song {
+    id: number
+    title: string 
+    artist: string
+    album: string
+    releaseYear: number
+    genre: string
+    durationSeconds: number 
 }
 
 class APIClient {
     constructor(private apiUrl: string) {}
 
-    public async deleteAllBooks(): Promise<void> {
+    public async GetSearchResults(searchTerm: string): Promise<string[]> {
+
         try {
-            console.log("Deleting all books");
-            await axios.delete(`${this.apiUrl}/books`, {withCredentials: true});
-            console.log("Deleted all books");
-        } catch (error) {
-            throw new Error('Error deleting all books');
+            console.log("Searching for songs");
+            console.log(searchTerm);
+            const response = await axios.get<string[]>(`${this.apiUrl}/search`, {
+                params: { query: searchTerm } 
+            });
+            return response.data;
+        } catch (error: any) {
+            console.error('Error while searching for songs', error);
+            throw new Error('Error while searching for songs');
         }
     }
 
-    public async getBooks(): Promise<Book[]> {
+    public async deleteAllSongs(): Promise<void> {
         try {
-            console.log("Getting books");
-            const response = await axios.get<Book[]>(`${this.apiUrl}/books`,
+            console.log("Deleting all songs");
+            await axios.delete(`${this.apiUrl}/songs`, {withCredentials: true});
+            console.log("Deleted all songs");
+        } catch (error) {
+            throw new Error('Error deleting all songs');
+        }
+    }
+
+    public async getSongs(): Promise<Song[]> {
+        try {
+            console.log("Getting songs");
+            const response = await axios.get<Song[]>(`${this.apiUrl}/songs`,
             {withCredentials: true});
-            console.log("Got books");
+            console.log("Got songs");
             return response.data;
         } catch (error) {
-            throw new Error('Error fetching books');
+            throw new Error('Error fetching songs');
         }
     }
 
-    public async getBook(id: string): Promise<Book> {
+    public async getSong(id: string): Promise<Song> {
         try {
-            const response = await axios.get<Book>(`${this.apiUrl}/books/${id}`);
+            const response = await axios.get<Song>(`${this.apiUrl}/songs/${id}`);
             return response.data;
         } catch (error) {
-            throw new Error(`Error fetching book with ID ${id}`);
+            throw new Error(`Error fetching song with ID ${id}`);
         }
     }
 
-    public async createBook(book: Book): Promise<Book> {
+    public async createSong(song: Song): Promise<Song> {
         try {
-            const response = await axios.post<Book>(`${this.apiUrl}/books`, book);
+            const response = await axios.post<Song>(`${this.apiUrl}/songs`, song);
             return response.data;
         } catch (error) {
-            throw new Error('Error creating a new book');
+            throw new Error('Error creating a new song');
         }
     }
 
-    public async updateBook(id: string, book: Partial<Book>): Promise<Book> {
+    public async updateSong(id: string, song: Partial<Song>): Promise<Song> {
         try {
-            const response = await axios.put<Book>(`${this.apiUrl}/books/${id}`, book);
+            const response = await axios.put<Song>(`${this.apiUrl}/songs/${id}`, song);
             return response.data;
         } catch (error) {
-            throw new Error(`Error updating book with ID ${id}`);
+            throw new Error(`Error updating song with ID ${id}`);
         }
     }
 
-    public async deleteBook(id: string): Promise<void> {
+    public async deleteSong(id: string): Promise<void> {
         try {
-            await axios.delete(`${this.apiUrl}/books/${id}`);
+            await axios.delete(`${this.apiUrl}/songs/${id}`);
         } catch (error) {
-            throw new Error(`Error deleting book with ID ${id}`);
+            throw new Error(`Error deleting song with ID ${id}`);
         }
     }
 }

@@ -5,26 +5,26 @@ import { RootStackParamList } from '../../App';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import TabOne from './TabOne';
-import TabTwo from './TabTwo';
-import TabThree from './TabThree';
+import DisplayTab from './DisplayTab';
+import InputTab from './InputTab';
+import UserTab from './UserTab';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'TabsScreen'>;
 
 const Tab = createBottomTabNavigator();
 
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  TabThree: undefined;
+  DisplayTab: undefined;
+  InputTab: undefined;
+  UserTab: undefined;
 };
 
 const TabsScreen = ({ navigation }: Props) => { 
     return (
         <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="TabOne" component={TabOne} />
-        <Tab.Screen name="TabTwo" component={TabTwo} />
-        <Tab.Screen name="TabThree" component={TabThree} />
+            <Tab.Screen name="DisplayTab" component={DisplayTab} />
+            <Tab.Screen name="InputTab" component={InputTab} />
+            <Tab.Screen name="UserTab" component={UserTab} />
       </Tab.Navigator>
     );
 };

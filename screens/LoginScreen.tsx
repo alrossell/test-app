@@ -12,10 +12,6 @@ const LoginScreen = ({ navigation }: Props) => {
     const [password, setPassword] = useState<string>('');
 
     const handleLogin = () => {
-        navigation.navigate('SettingsScreen');
-    };
-
-    const handleTabs = () => {
         navigation.navigate('TabsScreen');
     };
 
@@ -35,8 +31,7 @@ const LoginScreen = ({ navigation }: Props) => {
                 onChangeText={setPassword}
                 secureTextEntry
             />
-            <Button title="HomeScreen" onPress={handleLogin} />
-            <Button title="TabsScreen" onPress={handleTabs} />
+            <Button title="Login" onPress={handleLogin} />
         </View>
     );
 };
