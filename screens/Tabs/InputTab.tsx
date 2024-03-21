@@ -11,23 +11,14 @@ import { Song } from '../../api/apiClient';
 
 type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'InputTab'>;
 
-interface Book {
-    id: string;
-    title: string;
-    author: string;
-    year: string;
-}
-
 const InputTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) => {
 
-    const [author, setAuthor] = useState<string>('');
-    const [title, setTitle] = useState<string>('');
-    const [year, setYear] = useState<string>('');
+    const [searchList, setSearchList] = useState<Array<Song>>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const [filteredData, setFilteredData] = useState<Array<string>>([]);
-
-    const handleNewBook = () => {
+    const handleNewSong = () => {
         console.log("handleNewBook");
+        /*
         const sendData = async () => {
             try {
                 const song: Song = {
@@ -46,15 +37,20 @@ const InputTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation })
                 console.log(error);
             }
         }
+        */
 
-        sendData();
+        // sendData();
     };
 
-    const updateAuthor = (text: string) => {
-        setAuthor(text);
-        
-        client.GetSearchResults(text)
-            .then((data) => { setFilteredData(data); })
+    const updateSearchTerm = (text: string) => {
+        console.log(text);
+        setSearchTerm(text);
+        client.getSearchResults(text)
+            .then((data) => 
+        { 
+            setSearchList(data as unknown as Song[]);
+            console.log(data);
+        })
             .catch(error => { console.log(error); })
     };
 
@@ -65,17 +61,15 @@ const InputTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation })
             <TextInput
                 style={styles.input}
                 placeholder="Author"
-                value={author}
-                onChangeText={updateAuthor}
+                value={searchTerm}
+                onChangeText={updateSearchTerm}
              />
 
             <FlatList
-                data={filteredData}
-                keyExtractor={item => item}
-                renderItem={({ item }) => <Text>{item}</Text>}
+                data={searchList}
+                keyExtractor={item => item.Id.toString()}
+                renderItem={({ item }) => <Text>{item.Title}</Text>}
             />
-
-            <Button title="Create Book" onPress={handleNewBook} />
         </View>
 
     );

@@ -9,24 +9,17 @@ import { Song } from '../../api/apiClient'
 
 type SettingsScreenProps = BottomTabNavigationProp<RootTabParamList, 'DisplayTab'>;
 
-type Book = {
-    id: string
-    title: string
-    author: string
-    year: string 
-}
-
 const DisplayTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation }) => {
 
-    const [books, setBooks] = useState<Array<Book>>([]);
+    const [songs, setSongs] = useState<Array<Song>>([]);
 
     const handleGetUsers = () => {
         const fectchData = async () => {
             try {
                 console.log("Fetching books");
-                const fetchedBooks = await client.getSongs();
-                if(fetchedBooks != null)
-                    setBooks(fetchedBooks as unknown as Book[]);
+                const fetchedSongs = await client.getSongs();
+                if(fetchedSongs != null)
+                    setSongs(fetchedSongs as unknown as Song[]);
             } catch(error) {
                 console.log(error);
             }
@@ -34,11 +27,11 @@ const DisplayTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation 
         fectchData();
     }
 
-    const handleDeleteBooks = () => {
+    const handleDeleteSongs = () => {
         const deleteData = async () => {
             try {
                 await client.deleteAllSongs();
-                setBooks([]);
+                setSongs([]);
             } catch(error) {
                 console.log(error);
             }
@@ -46,12 +39,12 @@ const DisplayTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation 
         deleteData();
     }
 
-    const createReviewCard = (newBook: Book) => {
+    const createReviewCard = (index: number, newSong: Song) => {
         return (
-            <View key={newBook.id} style={styles.listItem}>
-                <Text>Author: {newBook.author}</Text>
-                <Text>Title: {newBook.title}</Text>
-                <Text>Year: {newBook.year}</Text>
+            <View key={newSong.Id} style={styles.listItem}>
+                <Text>Author: {newSong.Artist}</Text>
+                <Text>Title: {newSong.Title}</Text>
+                <Text>Year: {newSong.ReleaseYear}</Text>
             </View>
         );
     }
@@ -60,13 +53,13 @@ const DisplayTab: React.FC<{ navigation: SettingsScreenProps }> = ({ navigation 
         <View style={styles.container}>
             <Text>Hello from DisplayTab</Text>
             <ScrollView>
-                {books.map((item, index) => (
-                    createReviewCard(item)
+                {songs.map((item, index) => (
+                    createReviewCard(index, item)
                 ))}
             </ScrollView>
 
-            <Button title="Get Books" onPress={handleGetUsers} />
-            <Button title="Clear Users" onPress={handleDeleteBooks} />
+            <Button title="Get Songs" onPress={handleGetUsers} />
+            <Button title="Clear Users" onPress={handleDeleteSongs} />
         </View>
     );
 };
